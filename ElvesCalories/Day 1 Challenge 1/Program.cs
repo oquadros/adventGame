@@ -1,10 +1,10 @@
 ﻿Console.WriteLine("Please enter the location of the file containing the list of Calories submitted by the Elves");
-string elfCalorieListFile = Console.ReadLine();
+string elfCalorieListFile = Console.ReadLine().Trim('"');
 
 while (string.IsNullOrEmpty(elfCalorieListFile))
 {
     Console.WriteLine("There was no file to read provided, please provide a new file. Type 'e' to exit...");
-    elfCalorieListFile = Console.ReadLine();
+    elfCalorieListFile = Console.ReadLine().Trim('"');
     if (elfCalorieListFile == "e")
         Environment.Exit(0);
 }
@@ -63,5 +63,6 @@ using (StreamReader sr = new StreamReader(elfCalorieListFile))
 
     int totalNumberOfCaloriesTopThree = highestNumberOfCalories + secondHighestNumberOfCalories + thirdHighestNumberOfCalories;
 
+    Console.WriteLine($"The elf with the highest number of calories was {elfWithMostCalories} and they are carrying {highestNumberOfCalories} calories worth of supplies.");
     Console.WriteLine($"The elves with the highest number of calories were {elfWithMostCalories}, {elfWithSecondMostCalories}, and {elfWithThirdMostCalories} and they were carrying {totalNumberOfCaloriesTopThree} calories");
 }
