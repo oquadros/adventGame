@@ -36,6 +36,7 @@ namespace Day_2_Challenge
         public GameEvaluator()
         {
             _totalScore = 0;
+
             Victories.Add(HandValue.Rock, HandValue.Paper);
             Victories.Add(HandValue.Paper, HandValue.Scissor);
             Victories.Add(HandValue.Scissor, HandValue.Rock);
@@ -47,28 +48,28 @@ namespace Day_2_Challenge
 
         public string DetermineMyMove(string opponent, string expectedRoundOutcome)
         {
-            HandValue opponentMoveScore = (HandValue)OpponentScorePossibilities.IndexOf(opponent.ToUpper());
-            Scoring expectedRoundResult = (Scoring) (RoundOutcomePossibilities.IndexOf(expectedRoundOutcome.ToUpper()) * 3);
+            HandValue opponentMove = (HandValue)OpponentScorePossibilities.IndexOf(opponent.ToUpper());
+            Scoring expectedRoundResult = (Scoring)(RoundOutcomePossibilities.IndexOf(expectedRoundOutcome.ToUpper()) * 3);
 
-            HandValue winningAction = Victories[opponentMoveScore];
-            HandValue losingAction = Losses[opponentMoveScore];
+            HandValue myExpectedAction = GetMyExpectedAction(opponentMove, expectedRoundResult);
+            return MyScorePossibilities[(int)myExpectedAction];
+        }
 
-
-            HandValue myExpectedAction;
+        private HandValue GetMyExpectedAction(HandValue opponentMove, Scoring expectedRoundResult)
+        {
+            HandValue winningAction = Victories[opponentMove];
+            HandValue losingAction = Losses[opponentMove];
             if (expectedRoundResult == Scoring.Tie)
             {
-                myExpectedAction = opponentMoveScore;
-            }
-            else if (expectedRoundResult == Scoring.Win)
-            {
-                myExpectedAction = winningAction;
-            }
-            else
-            {
-                myExpectedAction = losingAction;
+                return opponentMove;
             }
 
-            return MyScorePossibilities[(int)myExpectedAction];
+            if (expectedRoundResult == Scoring.Win)
+            {
+               return winningAction;
+            }
+
+            return losingAction;            
         }
 
         public int EvaluateRound(string opponent, string mine)
